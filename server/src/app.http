@@ -1,0 +1,37 @@
+@URL=http://localhost:4000
+
+@TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyYTViNDI3Yy01ZjFiLTRhOWItYmNiYS1kZWJlNWJmYTJhNzEiLCJlbWFpbCI6ImJhbHV0YXJvY2s3MTExN0BnbWFpbC5jb20iLCJpYXQiOjE3NjI5MTg2NjgsImV4cCI6MTc2MjkyMjI2OH0.raX2Ru631h2PNb3Wy6NypjtESn5mERLY3m0g8ICCO08
+
+###
+GET {{URL}}/health
+Content-Type: application/json
+
+###
+POST {{URL}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "balutarock71117@gmail.com",
+  "password": "Qwerty@123",
+  "name": "balutarock"
+}
+
+###
+POST {{URL}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "balutarock71117@gmail.com",
+  "password": "Qwerty@123"
+}
+
+###
+GET {{URL}}/api/plans
+Content-Type: application/json
+
+
+###
+GET {{URL}}/api/subscriptions/my-subscription
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
