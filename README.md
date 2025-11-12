@@ -52,3 +52,29 @@ npm run db:push
 ```
 npm run dev
 ```
+
+#### Frontend Setup:
+
+##### change directory to client
+
+```
+cd client
+```
+
+##### copy the .env.example file to .env
+
+```
+cp .env.example .env
+```
+
+##### install dependencies
+
+```
+npm install
+```
+
+##### run the application
+
+```
+npm run dev
+```
