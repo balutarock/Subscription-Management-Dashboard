@@ -1,6 +1,6 @@
 #### Prerequisites
 
-1. Install node
+1. Install node(v22.14.0 must)
 2. Install docker
 
 #### Backend Setup:
@@ -9,6 +9,12 @@
 
 ```
 cd server
+```
+
+##### copy the .env.example file to .env
+
+```
+cp .env.example .env
 ```
 
 ##### install dependencies
