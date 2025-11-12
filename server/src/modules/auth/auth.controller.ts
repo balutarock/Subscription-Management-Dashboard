@@ -39,7 +39,6 @@ export const login = catchAsync(async (req: Request, res: Response) => {
   console.log(email, password);
 
   const user = await usersService.getUserByEmail(email);
-  console.log(user);
   if (!user) {
     const responseData = ApiResponse.failure(
       "User with provided email does not exist",
@@ -67,6 +66,6 @@ export const login = catchAsync(async (req: Request, res: Response) => {
     }
   );
 
-  const responseData = ApiResponse.success("success", { token });
+  const responseData = ApiResponse.success("success", { user, token });
   return handleApiResponse(responseData, res);
 });

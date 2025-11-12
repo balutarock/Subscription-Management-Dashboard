@@ -1,9 +1,9 @@
-#### Prerequisites
+## Prerequisites
 
 1. Install node(v22.14.0 must)
 2. Install docker
 
-#### Backend Setup:
+## Backend Setup:
 
 ##### change directory to server
 
@@ -53,7 +53,7 @@ npm run db:push
 npm run dev
 ```
 
-#### Frontend Setup:
+## Frontend Setup:
 
 ##### change directory to client
 
