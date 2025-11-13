@@ -7,6 +7,7 @@ import { DashboardPage } from "../dashboard/pages/dashboard";
 import { PlansPage } from "../plans/pages/plans";
 import { AdminSubscriptionsPage } from "../admin/pages/subscriptions";
 import { RequireAuth } from "./RequireAuth";
+import Layout from "@/components/layouts/layout";
 
 export type RouteObject = IndexRouteObject | NonIndexRouteObject;
 
@@ -40,7 +41,9 @@ const protectedRoutes: ReactRouteObject[] = [
     path: "/dashboard",
     element: (
       <RequireAuth>
-        <DashboardPage />
+        <Layout>
+          <DashboardPage />
+        </Layout>
       </RequireAuth>
     ),
   },
@@ -48,7 +51,9 @@ const protectedRoutes: ReactRouteObject[] = [
     path: "/plans",
     element: (
       <RequireAuth>
-        <PlansPage />
+        <Layout>
+          <PlansPage />
+        </Layout>
       </RequireAuth>
     ),
   },
@@ -60,7 +65,9 @@ const adminRoutes: ReactRouteObject[] = [
     path: "/admin/subscriptions",
     element: (
       <RequireAuth roles={['admin']}>
-        <AdminSubscriptionsPage />
+        <Layout>
+          <AdminSubscriptionsPage />
+        </Layout>
       </RequireAuth>
     ),
   },

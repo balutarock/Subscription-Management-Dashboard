@@ -1,15 +1,25 @@
 import { Navigate } from "react-router-dom";
-import { useAuthStore } from "../auth/authStore";
-import type { UserRole } from "../auth/authStore";
 import type { JSX } from "react";
+
+type UserRole = string; // Define or import the actual UserRole type if needed
 
 type RequireAuthProps = {
   children: JSX.Element;
   roles?: UserRole[];
 };
 
+const getAuthData = () => {
+  const token = localStorage.getItem('token');
+  const userData = localStorage.getItem('user');
+  
+  return {
+    isAuthenticated: !!token,
+    user: userData ? JSON.parse(userData) : null
+  };
+};
+
 export const RequireAuth = ({ children, roles }: RequireAuthProps) => {
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, user } = getAuthData();
 
   if (!isAuthenticated) {
     return <Navigate to="/sign-in" replace />;

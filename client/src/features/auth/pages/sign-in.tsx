@@ -45,9 +45,9 @@ export const SignInPage = () => {
     },
     onSuccess: (data) => {
       console.log("data", data);
-      const { token } = data.data;
+      const { token, user } = data.data.data;
       localStorage.setItem("token", token);
-      const user = data.data.user;
+      localStorage.setItem("user", JSON.stringify(user));
       // TODO: RefreshToken 
       login(user, token, "dfdf");
       toast.success("Successfully logged in", { id: "login-user" });
