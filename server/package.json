@@ -12,7 +12,8 @@
     "db:push": "prisma db push --schema=src/prisma/schema.prisma",
     "db:generate": "prisma generate --schema=src/prisma/schema.prisma",
     "db:migrate": "prisma migrate dev --name init --schema=src/prisma/schema.prisma",
-    "db:seed-plans": "ts-node src/prisma/seed-plans.ts"
+    "db:seed-plans": "ts-node src/prisma/seed-plans.ts",
+    "db:studio": "prisma studio --schema=src/prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",

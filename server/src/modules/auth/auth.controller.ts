@@ -36,7 +36,6 @@ export const register = catchAsync(async (req: Request, res: Response) => {
 
 export const login = catchAsync(async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  console.log(email, password);
 
   const user = await usersService.getUserByEmail(email);
   if (!user) {

@@ -23,6 +23,10 @@ export const subscribeToPlan = async ({
   // Check if user already has an active subscription
   const existingSubscription = await db.subscription.findFirst({
     where: {
+      createdAt: {
+        gte: new Date(new Date().setDate(1)),
+        lt: new Date(new Date().setDate(31)),
+      },
       userId,
       status: {
         in: ["active", "trialing", "past_due"],
@@ -31,7 +35,21 @@ export const subscribeToPlan = async ({
   });
 
   if (existingSubscription) {
-    throw new Error("User already has an active subscription");
+    const subscription = await db.subscription.update({
+      where: {
+        id: existingSubscription.id,
+      },
+      data: {
+        planId,
+        status: "active",
+        startDate: new Date(),
+        endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+      },
+      include: {
+        plan: true,
+      },
+    });
+    return subscription;
   }
 
   // Here you would typically integrate with a payment provider like Stripe

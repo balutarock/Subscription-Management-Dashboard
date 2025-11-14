@@ -44,14 +44,17 @@ export const SignInPage = () => {
       return loginUser(registrationData);
     },
     onSuccess: (data) => {
-      console.log("data", data);
       const { token, user } = data.data.data;
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       // TODO: RefreshToken 
       login(user, token, "dfdf");
       toast.success("Successfully logged in", { id: "login-user" });
-      navigate("/dashboard");
+      if (user.roles.includes("admin")) {
+        navigate("/admin/subscriptions");
+      } else {
+        navigate("/dashboard");
+      }
     },
     onError: (error) => {
       console.error("Login Error:", error);
@@ -64,7 +67,6 @@ export const SignInPage = () => {
   });
 
   const onSubmit = async (data: LoginFormValues) => {
-    console.log("data", data);
     try {
       setIsLoading(true);
       // In a real app, you would call your authentication API here

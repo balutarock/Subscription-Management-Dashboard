@@ -9,7 +9,7 @@ export const SubscribeToPlanValidation = z.object({
   params: z.object({
     planId: z.string().min(1, "Plan ID is required"),
   }),
-  body: subscribeToPlanValidation,
+  // body: subscribeToPlanValidation,
 });
 
 export type SubscribeToPlanInput = z.infer<typeof subscribeToPlanValidation>;

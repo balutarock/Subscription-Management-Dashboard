@@ -1,78 +1,59 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { useAuthStore } from "@/features/auth/authStore";
-
-type Plan = {
-  id: string;
-  name: string;
-  price: string;
-  description: string;
-  features: string[];
-  popular?: boolean;
-  buttonText: string;
-  buttonVariant: "default" | "outline" | "secondary" | "ghost" | "link" | null | undefined;
-};
+import { toast } from "sonner";
+import { useCreateSubscription } from '../queries';
+import { useQuery } from '@tanstack/react-query';
+import { getCurrentSubscription, getPlans } from '../api';
 
 export const PlansPage = () => {
-  const { user, hasRole } = useAuthStore();
-  const currentPlanId = user?.subscription?.planId;
+  const { hasRole } = useAuthStore();
   const isAdmin = hasRole('admin');
+  const [selectedPlanId, setSelectedPlanId] = useState<string>('');
+  const { mutate: createSubscription } = useCreateSubscription(selectedPlanId);
 
-  const plans: Plan[] = [
-    {
-      id: 'free',
-      name: 'Free',
-      price: '$0',
-      description: 'Perfect for getting started',
-      features: [
-        'Basic features',
-        'Limited access',
-        'Community support',
-      ],
-      buttonText: currentPlanId === 'free' ? 'Current Plan' : 'Get Started',
-      buttonVariant: currentPlanId === 'free' ? 'outline' : 'default',
-    },
-    {
-      id: 'pro',
-      name: 'Pro',
-      price: '$19',
-      description: 'For professionals and small teams',
-      features: [
-        'All Free features',
-        'Advanced features',
-        'Priority support',
-        'API access',
-      ],
-      popular: true,
-      buttonText: currentPlanId === 'pro' ? 'Current Plan' : 'Upgrade to Pro',
-      buttonVariant: currentPlanId === 'pro' ? 'outline' : 'default',
-    },
-    {
-      id: 'enterprise',
-      name: 'Enterprise',
-      price: 'Custom',
-      description: 'For large organizations',
-      features: [
-        'All Pro features',
-        'Dedicated support',
-        'Custom integrations',
-        'SLA 99.9%',
-        'Onboarding & training',
-      ],
-      buttonText: 'Contact Sales',
-      buttonVariant: 'outline',
-    },
-  ];
+  const { data: plansData, isLoading, error } = useQuery({
+    queryKey: ['plans'],
+    queryFn: getPlans,
+  });
+
+
+  const { data: currentPlanData }: { data: any } = useQuery({
+    queryKey: ['my-subscription'],
+    queryFn: getCurrentSubscription,
+  });
+
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[80vh]">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-red-500">Error loading plans. Please try again later.</p>
+      </div>
+    );
+  }
 
   const handleSelectPlan = (planId: string) => {
     if (planId === 'enterprise') {
       // Handle enterprise contact
+      toast.info("Enterprise plan selected. Please contact sales for more information.");
       return;
     }
 
-    // In a real app, you would redirect to a checkout page or handle subscription change
-    console.log(`Selected plan: ${planId}`);
+    // Set the selected plan ID and trigger the subscription
+    setSelectedPlanId(planId);
+    createSubscription(); // Pass any additional subscription data here if needed
+
   };
 
   return (
@@ -83,14 +64,14 @@ export const PlansPage = () => {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {plans.map((plan) => (
+        {plansData?.data?.map((plan) => (
           <Card
             key={plan.id}
-            className={`relative overflow-hidden ${plan.popular ? 'border-2 border-primary' : ''}`}
+            className={`relative overflow-hidden ${currentPlanData?.data?.plan.id === plan.id ? 'border-2 border-primary' : ''}`}
           >
-            {plan.popular && (
+            {currentPlanData?.data?.plan.id === plan.id && (
               <div className="bg-primary text-primary-foreground text-xs font-medium px-3 py-1 absolute right-0 top-4 rounded-l-full">
-                Most Popular
+                Current Plan
               </div>
             )}
             <CardHeader>
@@ -114,11 +95,12 @@ export const PlansPage = () => {
             <CardFooter className="mt-auto">
               <Button
                 className="w-full"
-                variant={plan.buttonVariant}
-                disabled={plan.id === currentPlanId}
+                // variant={plan.buttonVariant}
+                variant="default"
+                disabled={plan.id === currentPlanData?.data?.plan.id}
                 onClick={() => handleSelectPlan(plan.id)}
               >
-                {plan.buttonText}
+                Subscribe
               </Button>
             </CardFooter>
           </Card>
