@@ -46,7 +46,6 @@ export const SignInPage = () => {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       // TODO: RefreshToken 
-      console.log("user >> ", user.roles)
       login(user, token, "dfdf");
       toast.success("Successfully logged in", { id: "login-user" });
       if (user.roles.includes("admin")) {

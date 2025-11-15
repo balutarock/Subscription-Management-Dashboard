@@ -28,9 +28,7 @@ export const PlansPage = () => {
     enabled: isAuthenticated, // Only fetch if authenticated
   });
 
-  console.log(currentSubscription)
 
-  console.log(isAuthenticated, "isAuthenticated")
 
   const plans = plansResponse?.data || [];
   const currentPlanId = currentSubscription?.data?.planId;
