@@ -107,6 +107,13 @@ const AdminSubscriptionsPage = () => {
                   <TableCell>{formatDate(subscription.createdAt)}</TableCell>
                 </TableRow>
               ))}
+              {subscriptions?.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-24 text-center">
+                    No subscriptions found.
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </CardContent>
