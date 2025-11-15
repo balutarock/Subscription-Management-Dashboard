@@ -64,6 +64,15 @@ const SignUpFooter = ({ returnTo }: { returnTo: string | null }) => {
                     Sign In
                 </Link>
             </div>
+            <div className="text-center text-sm">
+                see plans{" "}
+                <Link
+                    to="/plans"
+                    className="font-medium text-primary hover:underline"
+                >
+                    Plans
+                </Link>
+            </div>
         </>
     );
 };

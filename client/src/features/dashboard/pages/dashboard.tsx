@@ -11,9 +11,8 @@ export const DashboardPage = () => {
   const subscriptionStatus = user?.subscription?.status || 'none';
 
   const handleUpgrade = () => {
-    navigate('/plans');
+    navigate('/subscribe');
   };
-
 
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -17,9 +17,9 @@ type MenuItem = {
     title: string;
     icon: React.ComponentType<{ className?: string }>;
 } & (
-    | { url: string; action?: never }
-    | { url?: never; action: true }
-);
+        | { url: string; action?: never }
+        | { url?: never; action: true }
+    );
 
 // Common items with sign out action
 const commonItems: MenuItem[] = [
@@ -38,8 +38,8 @@ const userItems: MenuItem[] = [
         icon: LayoutDashboard,
     },
     {
-        title: "Plans",
-        url: "/plans",
+        title: "Subscribe",
+        url: "/subscribe",
         icon: TicketsPlane,
     },
     ...commonItems
@@ -102,7 +102,7 @@ export function AppSidebar() {
                                                 confirmText="Sign Out"
                                                 onConfirm={handleLogout}
                                             >
-                                                <SidebarMenuButton 
+                                                <SidebarMenuButton
                                                     className="w-full text-left text-primary hover:bg-accent"
                                                 >
                                                     <item.icon className="w-5 h-5 mr-2" />
@@ -111,12 +111,12 @@ export function AppSidebar() {
                                             </ConfirmDialog>
                                         </div>
                                     ) : (
-                                        <SidebarMenuButton 
-                                            asChild 
+                                        <SidebarMenuButton
+                                            asChild
                                             className={`${currentPath === item.url ? "bg-primary hover:bg-primary text-white hover:text-white" : "text-primary hover:bg-accent"}`}
                                         >
-                                            <a 
-                                                href={item.url} 
+                                            <a
+                                                href={item.url}
                                                 className="w-full flex items-center"
                                                 onClick={handleItemClick(item)}
                                             >

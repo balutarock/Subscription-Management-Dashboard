@@ -30,6 +30,14 @@ const publicRoutes: ReactRouteObject[] = [
     ),
   },
   {
+    path: "/plans",
+    element: (
+
+      <PlansPage />
+
+    ),
+  },
+  {
     path: "/unauthorized",
     element: <div>Unauthorized</div>,
   },
@@ -48,7 +56,7 @@ const protectedRoutes: ReactRouteObject[] = [
     ),
   },
   {
-    path: "/plans",
+    path: "/subscribe",
     element: (
       <RequireAuth>
         <Layout>

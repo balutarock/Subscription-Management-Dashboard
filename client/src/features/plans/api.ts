@@ -28,9 +28,7 @@ export const subscribeToPlan = async (planId: string) => {
 
 export const getCurrentSubscription = async () => {
   try {
-    const response = await axiosInstance.get<Subscription>(
-      `${endpoint}/my-subscription`
-    );
+    const response = await axiosInstance.get(`${endpoint}/my-subscription`);
     return response.data;
   } catch (error: unknown) {
     // If it's a 404, return null subscription instead of error
@@ -65,7 +63,8 @@ export const getPlans = async (): Promise<PlansResponse> => {
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       console.error("Failed to fetch plans:", error);
-      const errorMessage = error.response?.data?.error || "Failed to fetch plans";
+      const errorMessage =
+        error.response?.data?.error || "Failed to fetch plans";
       throw new Error(errorMessage);
     }
     throw error;
