@@ -53,6 +53,18 @@ npm run db:push
 npm run dev
 ```
 
+##### Seed Plans in database
+
+```
+npm run db:seed-plans
+```
+
+##### Preview the database
+
+```
+npm run db:studio
+```
+
 ## Frontend Setup:
 
 ##### change directory to client
