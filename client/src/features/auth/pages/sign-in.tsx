@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -22,8 +22,6 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export const SignInPage = () => {
-  const [searchParams] = useSearchParams();
-  const returnTo = searchParams.get("returnTo") || "/dashboard";
   const [isLoading, setIsLoading] = useState(false);
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
@@ -48,6 +46,7 @@ export const SignInPage = () => {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       // TODO: RefreshToken 
+      console.log("user >> ", user.roles)
       login(user, token, "dfdf");
       toast.success("Successfully logged in", { id: "login-user" });
       if (user.roles.includes("admin")) {
@@ -74,8 +73,6 @@ export const SignInPage = () => {
       await mutateAsync({
         ...data,
       });
-
-      navigate(returnTo);
     } catch (error) {
       console.error("Login failed:", error);
       // Handle error (e.g., show toast)

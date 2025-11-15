@@ -5,7 +5,7 @@ import { SignUpPage } from "../auth/pages/sign-up";
 import { SignInPage } from "../auth/pages/sign-in";
 import { DashboardPage } from "../dashboard/pages/dashboard";
 import { PlansPage } from "../plans/pages/plans";
-import { AdminSubscriptionsPage } from "../admin/pages/subscriptions";
+import AdminSubscriptionsPage from "../admin/pages/subscriptions";
 import { RequireAuth } from "./RequireAuth";
 import Layout from "@/components/layouts/layout";
 

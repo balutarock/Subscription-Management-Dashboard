@@ -1,6 +1,6 @@
 @URL=http://localhost:4000
 
-@TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyYTViNDI3Yy01ZjFiLTRhOWItYmNiYS1kZWJlNWJmYTJhNzEiLCJlbWFpbCI6ImJhbHV0YXJvY2s3MTExN0BnbWFpbC5jb20iLCJpYXQiOjE3NjI5MTg2NjgsImV4cCI6MTc2MjkyMjI2OH0.raX2Ru631h2PNb3Wy6NypjtESn5mERLY3m0g8ICCO08
+@TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0ZTVjMTFiZi1kNmNmLTRhMTctOWIzZS1lMTYzYWM5NjM5MzciLCJlbWFpbCI6ImJhbHV0YXJvY2s3MTExMTdAZ21haWwuY29tIiwiaWF0IjoxNzYzMjA1NDU0LCJleHAiOjE3NjMyMDkwNTR9.AjgfDT6X051j-Vs675R-F9rRwzLr2wDMUmxCTwhDHoU
 
 ###
 GET {{URL}}/health
@@ -32,6 +32,13 @@ Content-Type: application/json
 
 ###
 GET {{URL}}/api/subscriptions/my-subscription
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+
+
+###
+GET {{URL}}/api/admin/subscriptions
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 

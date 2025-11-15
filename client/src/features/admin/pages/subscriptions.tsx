@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -9,104 +8,69 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuthStore } from "@/features/auth/authStore";
 import { format } from "date-fns";
+import { useQuery } from "@tanstack/react-query";
+import { getAllSubscriptions } from "../api";
+import { useAuthStore } from "@/features/auth/authStore";
+import type { Subscription } from "../types";
 
-// Mock data - in a real app, this would come from an API
-type Subscription = {
-  id: string;
-  userId: string;
-  userEmail: string;
-  planId: string;
-  status: 'active' | 'canceled' | 'past_due' | 'unpaid';
-  currentPeriodEnd: string;
-  amount: number;
-  currency: string;
-  createdAt: string;
+
+const getStatusBadge = (status: string) => {
+  switch (status) {
+    case 'active':
+      return <Badge className="bg-green-500">Active</Badge>;
+    case 'canceled':
+      return <Badge variant="outline">Canceled</Badge>;
+    case 'past_due':
+      return <Badge className="bg-yellow-500">Past Due</Badge>;
+    case 'unpaid':
+      return <Badge className="bg-red-500">Unpaid</Badge>;
+    default:
+      return <Badge variant="outline">{status}</Badge>;
+  }
 };
 
-const mockSubscriptions: Subscription[] = [
-  {
-    id: 'sub_1',
-    userId: 'user_1',
-    userEmail: 'user1@example.com',
-    planId: 'pro',
-    status: 'active',
-    currentPeriodEnd: '2025-12-31T23:59:59Z',
-    amount: 1900,
-    currency: 'usd',
-    createdAt: '2024-01-01T00:00:00Z',
-  },
-  {
-    id: 'sub_2',
-    userId: 'user_2',
-    userEmail: 'user2@example.com',
-    planId: 'free',
-    status: 'active',
-    currentPeriodEnd: '2025-12-31T23:59:59Z',
-    amount: 0,
-    currency: 'usd',
-    createdAt: '2024-01-15T00:00:00Z',
-  },
-  {
-    id: 'sub_3',
-    userId: 'user_3',
-    userEmail: 'user3@example.com',
-    planId: 'pro',
-    status: 'past_due',
-    currentPeriodEnd: '2024-11-01T23:59:59Z',
-    amount: 1900,
-    currency: 'usd',
-    createdAt: '2024-02-01T00:00:00Z',
-  },
-];
-
-const statusVariantMap = {
-  active: 'default',
-  canceled: 'outline',
-  past_due: 'destructive',
-  unpaid: 'destructive',
-} as const;
-
-export const AdminSubscriptionsPage = () => {
+const AdminSubscriptionsPage = () => {
   const { hasRole } = useAuthStore();
   const isAdmin = hasRole('admin');
 
+  const { data: subscriptionsData, isLoading } = useQuery({
+    queryKey: ['admin-subscriptions'],
+    queryFn: getAllSubscriptions,
+  });
+
+  // Use mock data if API doesn't return any data (for demo purposes)
+  const subscriptions = subscriptionsData as Subscription[];
   if (!isAdmin) {
     return (
       <div className="container mx-auto p-4">
-        <div className="text-center py-12">
-          <h2 className="text-2xl font-bold mb-4">Access Denied</h2>
-          <p className="text-muted-foreground">
-            You don't have permission to view this page.
-          </p>
-        </div>
+        <h1 className="text-2xl font-bold mb-4">Access Denied</h1>
+        <p>You don't have permission to view this page.</p>
       </div>
     );
   }
 
-  const formatCurrency = (amount: number, currency: string) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency.toUpperCase(),
-    }).format(amount / 100);
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  const formatDate = (dateString: string) => {
+    return format(new Date(dateString), 'MMM d, yyyy');
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto py-6">
       <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold">Subscriptions</h1>
-          <p className="text-muted-foreground">
-            Manage all user subscriptions
-          </p>
-        </div>
-        <Button onClick={() => { }}>Export</Button>
+        <h1 className="text-2xl font-bold">Subscriptions</h1>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Subscription Overview</CardTitle>
+          <CardTitle>All Subscriptions</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -114,48 +78,33 @@ export const AdminSubscriptionsPage = () => {
               <TableRow>
                 <TableHead>User</TableHead>
                 <TableHead>Plan</TableHead>
+                <TableHead>Price</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Renews On</TableHead>
+                <TableHead>Start Date</TableHead>
+                <TableHead>End Date</TableHead>
                 <TableHead>Created</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockSubscriptions.map((subscription) => (
+              {subscriptions?.map((subscription: Subscription) => (
                 <TableRow key={subscription.id}>
                   <TableCell className="font-medium">
-                    {subscription.userEmail}
+                    <div className="flex flex-col">
+                      <span>{subscription.user.name}</span>
+                      <span className="text-xs text-gray-500">{subscription.user.email}</span>
+                    </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="capitalize">
-                      {subscription.planId}
-                    </Badge>
+                    <div className="font-medium">{subscription.plan.name}</div>
+                    <div className="text-xs text-gray-500">{subscription.plan.duration} days</div>
                   </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={statusVariantMap[subscription.status]}
-                      className="capitalize"
-                    >
-                      {subscription.status.replace('_', ' ')}
-                    </Badge>
+                  <TableCell className="whitespace-nowrap">
+                    ${subscription.plan.price.toFixed(2)}
                   </TableCell>
-                  <TableCell>
-                    {subscription.amount > 0
-                      ? formatCurrency(subscription.amount, subscription.currency)
-                      : 'Free'}
-                  </TableCell>
-                  <TableCell>
-                    {format(new Date(subscription.currentPeriodEnd), 'MMM d, yyyy')}
-                  </TableCell>
-                  <TableCell>
-                    {format(new Date(subscription.createdAt), 'MMM d, yyyy')}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button variant="ghost" size="sm">
-                      View
-                    </Button>
-                  </TableCell>
+                  <TableCell>{getStatusBadge(subscription.status)}</TableCell>
+                  <TableCell>{formatDate(subscription.startDate)}</TableCell>
+                  <TableCell>{formatDate(subscription.endDate)}</TableCell>
+                  <TableCell>{formatDate(subscription.createdAt)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
