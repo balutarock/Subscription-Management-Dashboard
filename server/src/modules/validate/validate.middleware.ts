@@ -15,7 +15,11 @@ export const validateRequest =
       logger.info("Validation error:", firstError);
       const errorMessage = `Invalid input: ${firstError?.message}`;
       const statusCode = StatusCodes.BAD_REQUEST;
-      const serviceResponse = ApiResponse.failure(errorMessage, null, statusCode);
+      const serviceResponse = ApiResponse.failure(
+        errorMessage,
+        null,
+        statusCode,
+      );
       // @ts-expect-error return if validation error occurs
       return handleApiResponse(serviceResponse, res);
     }

@@ -8,6 +8,7 @@ import { PlansPage } from "../plans/pages/plans";
 import AdminSubscriptionsPage from "../admin/pages/subscriptions";
 import { RequireAuth } from "./RequireAuth";
 import Layout from "@/components/layouts/layout";
+import Todo from "../todo/pages/todo";
 
 export type RouteObject = IndexRouteObject | NonIndexRouteObject;
 
@@ -41,6 +42,12 @@ const publicRoutes: ReactRouteObject[] = [
     path: "/unauthorized",
     element: <div>Unauthorized</div>,
   },
+  {
+    path: "/todo",
+    element: (
+      <Todo />
+    ),
+  },
 ];
 
 // Protected routes - require authentication
@@ -65,6 +72,7 @@ const protectedRoutes: ReactRouteObject[] = [
       </RequireAuth>
     ),
   },
+
 ];
 
 // Admin routes - require admin role

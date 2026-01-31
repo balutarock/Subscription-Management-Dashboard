@@ -3,6 +3,7 @@ import authRoute from "./auth.route";
 import plansRoute from "./plans.route";
 import subscriptionsRoute from "./subscriptions.route";
 import adminRoute from "./admin/index.route";
+import todoRoute from "./todo.route";
 const router = express.Router();
 
 interface IRoute {
@@ -26,6 +27,10 @@ const defaultIRoute: IRoute[] = [
   {
     path: "/admin",
     route: adminRoute,
+  },
+  {
+    path: "/todo",
+    route: todoRoute,
   },
 ];
 

@@ -42,3 +42,31 @@ GET {{URL}}/api/admin/subscriptions
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
+##### TODO
+###
+GET {{URL}}/api/todo/
+Content-Type: application/json
+
+###
+POST {{URL}}/api/todo/
+Content-Type: application/json
+
+{
+  "title": "Test Todo",
+  "isCompleted": false
+}
+
+
+###
+PUT {{URL}}/api/todo/ed0d17b4-f3e1-4882-93cf-d4265d975948
+Content-Type: application/json
+
+{
+  "title": "Updated Todo",
+  "isCompleted": true
+}
+
+
+###
+DELETE {{URL}}/api/todo/ed0d17b4-f3e1-4882-93cf-d4265d975948
+Content-Type: application/json
